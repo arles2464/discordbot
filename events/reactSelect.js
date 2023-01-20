@@ -8,7 +8,7 @@ module.exports = {
 		if (interaction.customId === 'reaction') {
 			const reactImage = new AttachmentBuilder('images/' + interaction.values[0] + '.png');
 
-			if (reactImage !== 'error') {
+			if (reactImage !== 'ERROR') {
 				await interaction.update({ content: 'highly relevant and humourous image selected', components: [] });
 				await interaction.channel.send({ content: `${interaction.user.username}'s live reaction`, files: [reactImage] });
 			} else {
