@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 
 const server = http.createServer(function(request, response) {
 	console.dir(request.param);
-
+	let errorEncountered = false;
 	if (request.method == 'POST') {
 		console.log('POST');
 		let body = '';
@@ -18,10 +18,12 @@ const server = http.createServer(function(request, response) {
 			exec('git pull; pkill -n node; node bot.js', (error, stdout, stderr) => {
 				if (error) {
 					console.log(`error: ${error.message}`);
+					errorEncountered = true;
 					return;
 				}
 				if (stderr) {
 					console.log(`stderr: ${stderr}`);
+					errorEncountered = true;
 					return;
 				}
 				console.log(`stdout: ${stdout}`);
@@ -29,14 +31,25 @@ const server = http.createServer(function(request, response) {
 		});
 	} else {
 		console.log('GET');
-		const html = `
+		const htmlOn = `
             <html>
                 <body>
-					<h1>fuck off cunt</h1>
+					<h1>No Errors Encountered</h1>
+                </body>
+            </html>`;
+		const htmlOff = `
+            <html>
+                <body>
+					<h1>Error Encountered</h1>
+					<h2>Please Check Server</h2>
                 </body>
             </html>`;
 		response.writeHead(200, { 'Content-Type': 'text/html' });
-		response.end(html);
+		if (errorEncountered) {
+			response.end(htmlOff);
+		} else {
+			response.end(htmlOn);
+		}
 	}
 });
 
