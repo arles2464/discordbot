@@ -26,6 +26,28 @@ const server = http.createServer(function(request, response) {
 				}
 				console.log(`stdout: ${stdout}`);
 			});
+			exec('pkill -n node', (error, stdout, stderr) => {
+				if (error) {
+					console.log(`error: ${error.message}`);
+					return;
+				}
+				if (stderr) {
+					console.log(`stderr: ${stderr}`);
+					return;
+				}
+				console.log(`stdout: ${stdout}`);
+			});
+			exec('node bot.js', (error, stdout, stderr) => {
+				if (error) {
+					console.log(`error: ${error.message}`);
+					return;
+				}
+				if (stderr) {
+					console.log(`stderr: ${stderr}`);
+					return;
+				}
+				console.log(`stdout: ${stdout}`);
+			});
 		});
 	} else {
 		console.log('GET');
